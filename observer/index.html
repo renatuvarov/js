@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modals</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">Modals</div>
+    <nav class="nav js-nav">
+        <div class="modal modal_popup js-modal">
+            <ul class="nav-list">
+                <li class="nav-item">item 1</li>
+                <li class="nav-item">item 2</li>
+                <li class="nav-item">item 3</li>
+                <li class="nav-item">item 4</li>
+                <li class="nav-item">item 5</li>
+            </ul>
+        </div>
+        <button class="show_modal js-show_modal" type="button">show menu</button>
+    </nav>
+</header>
+<main class="main">
+    <section class="section_1 js-section_1">
+        <h2>Section 1</h2>
+        <div class="modal modal_layout js-modal js-modal_layout">
+            <div class="modal-body">
+                <p class="modal-content">section 1 modal</p>
+                <button class="modal-hide js-modal-hide" type="button"></button>
+            </div>
+        </div>
+        <button class="show_modal show_modal js-show_modal" type="button">show modal</button>
+    </section>
+    <section class="section_2 js-section_2">
+        <h2>Section 2</h2>
+        <div class="content">
+            <div class="modal modal_popup js-modal">
+                <p class="modal-content">section 2 modal</p>
+                <button class="modal-hide js-modal-hide" type="button"></button>
+            </div>
+            <button class="show_modal show_modal js-show_modal" type="button">show modal</button>
+        </div>
+    </section>
+</main>
+<script src="js.js"></script>
+</body>
+</html>
