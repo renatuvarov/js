@@ -27,6 +27,7 @@ img {
 
 .slider {
     position: relative;
+    margin-top: 50px;
 }
 
 .image-list {
@@ -38,19 +39,122 @@ img {
     width: 100%;
     text-align: center;
     opacity: 0;
-    transition: 0.3s;
-    max-height: 100%;    
+    /* transition: 0.3s; */
+    max-height: 100%;
 }
 
 .image-container-active {
     opacity: 1;
+    z-index: 1000;
 }
 
-.control {
+.btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    z-index: 1001;
 } 
+
+.btn-prev {
+    left: 0;
+}
+
+.btn-next {
+    right: 0;
+}
+
+.info {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+.layout-info {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    color: #ffffff;
+}
+
+.slider-layout {
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    max-width: 100%;
+    width: 100%;
+    background-color: black;
+    display: none;
+    z-index: 1002;
+}
+
+.slider-layout-active {
+    display: flex;
+}
+
+.slider-layout-active .btn-prev {
+    left: 50px;
+}
+
+.slider-layout-active .btn-next {
+    right: 50px;
+}
+
+.layout-image {
+    width: auto;
+    max-width: 80%;
+    max-height: 80%;
+    height: auto;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 1000;
+}
+
+.layout-control {
+    padding: 0 50px;
+}
+
+.btn {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 75px;
+    border: 1px solid rgb(230, 230, 230);
+    font-size: 30px;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.301);
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    opacity: 1;
+    transform: translateY(-57%);
+}
+
+.image-container-active .image {
+    cursor: zoom-in;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+
+    .layout-image {
+        max-width: 100%;
+    }
+
+    .slider-layout-active .btn-prev {
+        left: 5px;
+    }
+    
+    .slider-layout-active .btn-next {
+        right: 5px;
+    }
+}
