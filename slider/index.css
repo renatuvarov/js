@@ -1,0 +1,56 @@
+* {
+    box-sizing: border-box;
+}
+
+html, 
+body,
+ul,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.slider {
+    position: relative;
+}
+
+.image-list {
+    position: relative;
+}
+
+.image-container {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: 0.3s;
+    max-height: 100%;    
+}
+
+.image-container-active {
+    opacity: 1;
+}
+
+.control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+} 
