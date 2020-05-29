@@ -1,296 +1,294 @@
-var Slider = function(element) {
+// var Slider = function (element) {
 
-    var AbstractList = function(el) {
-        if (new.target === AbstractList) {
-            throw new TypeError('Cannot construct abstract instance.');
-        }
-    };
+//     var AbstractList = function (el) {
+//         if (new.target === AbstractList) {
+//             throw new TypeError('Cannot construct abstract instance.');
+//         }
+//     };
 
-    AbstractList.prototype.changeSlide = function() {
-        throw new TypeError('A class that inherits AbstractList must override this method.');
-    };
+//     AbstractList.prototype.changeSlide = function () {
+//         throw new TypeError('A class that inherits AbstractList must override this method.');
+//     };
 
-    AbstractList.prototype.show = function() {
-        throw new TypeError('A class that inherits AbstractList must override this method.');
-    };
+//     AbstractList.prototype.show = function () {
+//         throw new TypeError('A class that inherits AbstractList must override this method.');
+//     };
 
-    AbstractList.prototype.hide = function() {
-        throw new TypeError('A class that inherits AbstractList must override this method.');
-    };
+//     AbstractList.prototype.hide = function () {
+//         throw new TypeError('A class that inherits AbstractList must override this method.');
+//     };
 
-    var DefaultList = function(el) {
-        var $this = this;
+//     var DefaultList = function (el) {
+//         var $this = this;
 
-        var el = $(el);
-        var infoCurrent = null;
+//         var el = $(el);
+//         var infoCurrent = null;
 
-        var changeByTimeout = function() {
-            var id = setTimeout(function() {
-                if (state.getCurrentList() === $this) {
-                    $this.changeSlide(state.nextImage());
-                }
-            }, 5000);
-    
-            state.setTimerId(id);
-        };
+//         var changeByTimeout = function () {
+//             var id = setTimeout(function () {
+//                 if (state.getCurrentList() === $this) {
+//                     $this.changeSlide(state.nextImage());
+//                 }
+//             }, 5000);
 
-        var removeActiveClass = function() {
-            el.find('.js-image-container').removeClass('image-container-active');
-        }
+//             state.setTimerId(id);
+//         };
 
-        var initList = function() {
-            changeByTimeout();
+//         var removeActiveClass = function () {
+//             el.find('.js-image-container').removeClass('image-container-active');
+//         }
 
-            var fragment = $(document.createDocumentFragment());
+//         var initList = function () {
+//             changeByTimeout();
 
-            var minHeight = Math.min.apply(null, $('.js-image').map(function () {
-                return $(this).height();
-            }).get());
-    
-            element.find('.js-image-list').css({'height': minHeight + 'px'});
-            element.find('.image-container').css({'height': minHeight + 'px'});
-    
-            element.find('.js-image')
-                .eq(state.getCurrentImage())
-                .closest('.image-container')
-                .addClass('image-container-active');
+//             var fragment = $(document.createDocumentFragment());
 
-            fragment.append($('<button>', {class: 'btn js-btn btn-prev js-btn-prev', text: '⬅',}));
-            fragment.append($('<button>', {class: 'btn js-btn btn-next js-btn-next', text: '➡',}));
+//             var minHeight = Math.min.apply(null, $('.js-image').map(function () {
+//                 return $(this).height();
+//             }).get());
 
-            fragment.find('.js-btn').css({top: minHeight / 2 + 'px'});
-        
-            var info = $('<div>', {
-                class: 'info',
-                append: $('<span>', {
-                    class: 'info-current js-info-current',
-                }).add($('<span>', {
-                    class: 'info-separator',
-                    text: '/'
-                })).add($('<span>', {
-                    class: 'info-count js-info-count',
-                }))
-            });
+//             element.find('.js-image-list').css({'height': minHeight + 'px'});
+//             element.find('.image-container').css({'height': minHeight + 'px'});
 
-            infoCurrent = info.find('.js-info-current');
-    
-            infoCurrent.text(state.getCurrentImage() + 1);
-            info.find('.js-info-count').text(state.getImagesListCount());
+//             element.find('.js-image')
+//                 .eq(state.getCurrentImage())
+//                 .closest('.image-container')
+//                 .addClass('image-container-active');
 
-            fragment.append(info);
-    
-            element.append(fragment);
-        };
+//             fragment.append($('<button>', {class: 'btn js-btn btn-prev js-btn-prev', text: '⬅',}));
+//             fragment.append($('<button>', {class: 'btn js-btn btn-next js-btn-next', text: '➡',}));
 
-        initList();
+//             fragment.find('.js-btn').css({top: minHeight / 2 + 'px'});
 
-        this.changeSlide = function(index) {
-            clearTimeout(state.getTimerId());
+//             var info = $('<div>', {
+//                 class: 'info',
+//                 append: $('<span>', {
+//                     class: 'info-current js-info-current',
+//                 }).add($('<span>', {
+//                     class: 'info-separator',
+//                     text: '/'
+//                 })).add($('<span>', {
+//                     class: 'info-count js-info-count',
+//                 }))
+//             });
 
-            removeActiveClass();
-            el.find('.js-image').eq(index).closest('.js-image-container').addClass('image-container-active');
-            infoCurrent.text(index + 1);
+//             infoCurrent = info.find('.js-info-current');
 
-            changeByTimeout();
-        }
+//             infoCurrent.text(state.getCurrentImage() + 1);
+//             info.find('.js-info-count').text(state.getImagesListCount());
 
-        this.show = function() {
-            $this.changeSlide(state.getCurrentImage());
-            // setTimeout(function() {
-            //     el.find('.js-image-container').css({transition: '0.3s'});
-            // }, 3000);
-        };
+//             fragment.append(info);
 
-        this.hide = function() {
-            // el.find('.js-image-container').css({transition: 0});
-        };
-    };
+//             element.append(fragment);
+//         };
 
-    DefaultList.prototype = Object.create(AbstractList.prototype);
-    DefaultList.prototype.constructor = DefaultList;
+//         initList();
 
-    var LayoutList = function() {
-        this.el = null;
-        var infoCurrent = null;
-        var $this = this;
+//         this.changeSlide = function (index) {
+//             clearTimeout(state.getTimerId());
 
-        var initList = function() {
-            var layout = $('<div>', {
-                class: 'slider-layout js-slider-layout',
-                append:  $('<img>', {
-                        class: 'js-layout-image layout-image',
-                        src: state.getImagesList()[state.getCurrentImage()]
-                    }).add($('<div>', {
-                    class: 'layout-control',
-                    append: $('<button>', {
-                        class: 'btn btn-prev js-btn-prev',
-                        text: '⬅',
-                    }).add($('<button>', {
-                        class: 'btn btn-next js-btn-next',
-                        text: '➡',
-                    }))
-                })).add($('<div>', {
-                    class: 'info layout-info',
-                    append: $('<span>', {
-                        class: 'info-current js-info-current',
-                    }).add($('<span>', {
-                        class: 'info-separator',
-                        text: '/'
-                    })).add($('<span>', {
-                        class: 'info-count js-info-count',
-                    }))
-                }))
-            });
+//             removeActiveClass();
+//             el.find('.js-image').eq(index).closest('.js-image-container').addClass('image-container-active');
+//             infoCurrent.text(index + 1);
 
-            element.append(layout);
-            $this.el = layout;
-            infoCurrent = $this.el.find('.js-info-current');
-            infoCurrent.text(state.getCurrentImage() + 1);
-            $this.el.find('.js-info-count').text(state.getImagesListCount());
-        };
+//             changeByTimeout();
+//         }
 
-        initList();
+//         this.show = function () {
+//             $this.changeSlide(state.getCurrentImage());
+//             // setTimeout(function() {
+//             //     el.find('.js-image-container').css({transition: '0.3s'});
+//             // }, 3000);
+//         };
 
-        this.changeSlide = function(index) {
-            $this.el.find('.js-layout-image').attr('src', state.getImagesList()[state.getCurrentImage()]);
-            infoCurrent.text(index + 1);
-        }
+//         this.hide = function () {
+//             // el.find('.js-image-container').css({transition: 0});
+//         };
+//     };
 
-        this.show = function() {
-            $this.el.addClass('slider-layout-active');
-            this.changeSlide(state.getCurrentImage());
-        }
+//     DefaultList.prototype = Object.create(AbstractList.prototype);
+//     DefaultList.prototype.constructor = DefaultList;
 
-        this.hide = function() {
-            $this.el.removeClass('slider-layout-active');
-        }
-    };
+//     var LayoutList = function () {
+//         this.el = null;
+//         var infoCurrent = null;
+//         var $this = this;
 
-    LayoutList.prototype = Object.create(AbstractList.prototype);
-    LayoutList.prototype.constructor = LayoutList;
+//         var initList = function () {
+//             var layout = $('<div>', {
+//                 class: 'slider-layout js-slider-layout',
+//                 append: $('<img>', {
+//                     class: 'js-layout-image layout-image',
+//                     src: state.getImagesList()[state.getCurrentImage()]
+//                 }).add($('<div>', {
+//                     class: 'layout-control',
+//                     append: $('<button>', {
+//                         class: 'btn btn-prev js-btn-prev',
+//                         text: '⬅',
+//                     }).add($('<button>', {
+//                         class: 'btn btn-next js-btn-next',
+//                         text: '➡',
+//                     }))
+//                 })).add($('<div>', {
+//                     class: 'info layout-info',
+//                     append: $('<span>', {
+//                         class: 'info-current js-info-current',
+//                     }).add($('<span>', {
+//                         class: 'info-separator',
+//                         text: '/'
+//                     })).add($('<span>', {
+//                         class: 'info-count js-info-count',
+//                     }))
+//                 }))
+//             });
 
-    var state = (function() {
-        var state = {
-            timerId: null,
-            currentList: null,
-            imagesList: [],
-            currentImage: null
-        };
+//             element.append(layout);
+//             $this.el = layout;
+//             infoCurrent = $this.el.find('.js-info-current');
+//             infoCurrent.text(state.getCurrentImage() + 1);
+//             $this.el.find('.js-info-count').text(state.getImagesListCount());
+//         };
 
-        element.find('.js-image').each(function() {
-            state.imagesList.push($(this).attr('src'));
-            state.currentImage = 0;
-        });
+//         initList();
 
-        return {
-            getCurrentList: function() {
-                return state.currentList;
-            },
+//         this.changeSlide = function (index) {
+//             $this.el.find('.js-layout-image').attr('src', state.getImagesList()[state.getCurrentImage()]);
+//             infoCurrent.text(index + 1);
+//         }
 
-            setCurrentList: function(list) {
-                if ( ! (list instanceof AbstractList)) {
-                    throw new TypeError('list must be of the type AbstractList, "' + (typeof list) + '" given.');
-                }
+//         this.show = function () {
+//             $this.el.addClass('slider-layout-active');
+//             this.changeSlide(state.getCurrentImage());
+//         }
 
-                state.currentList = list;
-            },
+//         this.hide = function () {
+//             $this.el.removeClass('slider-layout-active');
+//         }
+//     };
 
-            getTimerId: function() {
-                return state.timerId;
-            },
+//     LayoutList.prototype = Object.create(AbstractList.prototype);
+//     LayoutList.prototype.constructor = LayoutList;
 
-            setTimerId: function(id) {
-                state.timerId = id;
-            },
+//     var state = (function () {
+//         var state = {
+//             timerId: null,
+//             currentList: null,
+//             imagesList: [],
+//             currentImage: null
+//         };
 
-            getImagesList: function() {
-                return state.imagesList;
-            },
+//         element.find('.js-image').each(function () {
+//             state.imagesList.push($(this).attr('src'));
+//             state.currentImage = 0;
+//         });
 
-            getImagesListCount() {
-                return this.getImagesList().length;
-            },
+//         return {
+//             getCurrentList: function () {
+//                 return state.currentList;
+//             },
 
-            getCurrentImage: function() {
-                return state.currentImage;
-            },
+//             setCurrentList: function (list) {
+//                 if (!(list instanceof AbstractList)) {
+//                     throw new TypeError('list must be of the type AbstractList, "' + (typeof list) + '" given.');
+//                 }
 
-            setCurrentImage: function(index) {
-                state.currentImage = index;
-            },
+//                 state.currentList = list;
+//             },
 
-            nextImage: function() {
-                var currentIndex = this.getCurrentImage();
+//             getTimerId: function () {
+//                 return state.timerId;
+//             },
 
-                if (++currentIndex === this.getImagesListCount()) {
-                    this.setCurrentImage(0);
-                } else {
-                    this.setCurrentImage(currentIndex)
-                }
+//             setTimerId: function (id) {
+//                 state.timerId = id;
+//             },
 
-                return this.getCurrentImage();
-            },
+//             getImagesList: function () {
+//                 return state.imagesList;
+//             },
 
-            prevImage: function() {
-                var currentIndex = this.getCurrentImage();
+//             getImagesListCount() {
+//                 return this.getImagesList().length;
+//             },
 
-                if (--currentIndex < 0) {
-                    this.setCurrentImage(this.getImagesListCount() - 1);
-                } else {
-                    this.setCurrentImage(currentIndex)
-                }
+//             getCurrentImage: function () {
+//                 return state.currentImage;
+//             },
 
-                return this.getCurrentImage();
-            }
-        };
-    })();
+//             setCurrentImage: function (index) {
+//                 state.currentImage = index;
+//             },
 
-    var sliderObj = function() {
-        var defaultList = new DefaultList('.js-image-list');
-        var layoutList = new LayoutList();
+//             nextImage: function () {
+//                 var currentIndex = this.getCurrentImage();
 
-        state.setCurrentList(defaultList);
+//                 if (++currentIndex === this.getImagesListCount()) {
+//                     this.setCurrentImage(0);
+//                 } else {
+//                     this.setCurrentImage(currentIndex)
+//                 }
 
-        var s = {
-            prev: function() {
-                if (state.getImagesListCount() > 1) {
-                    state.getCurrentList().changeSlide(state.prevImage());
-                }                
-            },
-    
-            next: function() {
-                if (state.getImagesListCount() > 1) {
-                    state.getCurrentList().changeSlide(state.nextImage());
-                } 
-            },
+//                 return this.getCurrentImage();
+//             },
 
-            setDefault: function(e) {
-                if ($(e.target).hasClass('js-slider-layout')) {
-                    state.setCurrentList(defaultList);
-                    defaultList.show();
-                    layoutList.hide();
-                }
-            },
+//             prevImage: function () {
+//                 var currentIndex = this.getCurrentImage();
 
-            setLayout: function() {
-                defaultList.hide();
-                state.setCurrentList(layoutList);
-                layoutList.show();
-            }
-        };
-        
-        return s;
-    };
+//                 if (--currentIndex < 0) {
+//                     this.setCurrentImage(this.getImagesListCount() - 1);
+//                 } else {
+//                     this.setCurrentImage(currentIndex)
+//                 }
 
-    var init = function() {
-        var s = sliderObj(); 
-        element.find('.js-btn-prev').on('click', s.prev);
-        element.find('.js-btn-next').on('click', s.next);
-        element.find('.js-image').on('click', s.setLayout);
-        element.find('.js-slider-layout').on('click', s.setDefault)
-    };
+//                 return this.getCurrentImage();
+//             }
+//         };
+//     })();
 
-    return init();
-};
+//     var sliderObj = function () {
+//         var defaultList = new DefaultList('.js-image-list');
+//         var layoutList = new LayoutList();
 
-Slider($('.js-slider'));
+//         state.setCurrentList(defaultList);
+
+//         return {
+//             prev: function () {
+//                 if (state.getImagesListCount() > 1) {
+//                     state.getCurrentList().changeSlide(state.prevImage());
+//                 }
+//             },
+
+//             next: function () {
+//                 if (state.getImagesListCount() > 1) {
+//                     state.getCurrentList().changeSlide(state.nextImage());
+//                 }
+//             },
+
+//             setDefault: function (e) {
+//                 if ($(e.target).hasClass('js-slider-layout')) {
+//                     state.setCurrentList(defaultList);
+//                     defaultList.show();
+//                     layoutList.hide();
+//                 }
+//             },
+
+//             setLayout: function () {
+//                 defaultList.hide();
+//                 state.setCurrentList(layoutList);
+//                 layoutList.show();
+//             }
+//         };
+//     };
+
+//     var init = function () {
+//         var s = sliderObj();
+//         element.find('.js-btn-prev').on('click', s.prev);
+//         element.find('.js-btn-next').on('click', s.next);
+//         element.find('.js-image').on('click', s.setLayout);
+//         element.find('.js-slider-layout').on('click', s.setDefault)
+//     };
+
+//     return init();
+// };
+
+$('.js-slider').Slider();
